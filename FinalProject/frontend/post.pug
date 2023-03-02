@@ -1,0 +1,68 @@
+extends layout
+
+block content
+    h1 Post page
+    // if post is not found, show a message
+    if !post
+        h1.post-not-found Post not found
+    else
+        // if the user is the author of the post, show the edit and delete buttons. The have to be in the same line, not one below the other
+        if user && (user._id === post.author || user.username === post.author_name)
+            div.btn-group(role="group" aria-label="Basic example")
+                a.btn.btn-primary(href=`/posts/edit/${post._id}`) Edit
+                form(action=`/posts/delete/${post._id}` method="POST")
+                    button.btn.btn-danger(type="submit") Delete
+        div.card
+            div.card-body
+                h5.card-title= post.title
+                h6.card-subtitle.mb-2.text-muted= post.description
+                p.card-text
+                    pre
+                        code.hljs(class=`${post.language}`).
+                            #{post.content}
+                p.card-text
+                    // show the language and tags in a non-white color
+                    text-muted= "Language: " + post.language 
+                    br
+                    text-muted= "Tags: " + post.tags
+                p.card-text
+                    text-muted= post.author_name
+                    - const moment = require('moment')
+                    // show the creation time of the post if it's different from the edit time. show the edit time if it's different. show it in a shorter format
+                    if post.createdAt != post.updatedAt
+                        |  edited #{moment(post.updatedAt).fromNow()}
+                    else
+                        |  posted #{moment(post.createdAt).fromNow()}
+
+        // if the user is logged in, show the comment form
+        if user
+            form(action=`/posts/${post._id}/comments` method="POST")
+                .form-group
+                    label(for="content") Comment
+                    textarea#content.form-control(name="content" placeholder="Comment" required)
+                    input(type="hidden" name="user" value=user._id)
+                button.btn.btn-primary(type="submit") Submit
+        else
+            p Please login to comment
+
+        // if there are comments, show them
+        if comments.length
+            each comment in comments
+                div.card
+                    div.card-body
+                        p.card-text= comment.text
+                        p.card-text
+                            small.text-muted= comment.user.username
+                            - const moment = require('moment')
+                            // show the creation time of the comment if it's different from the edit time. show the edit time if it's different. show it in a shorter format
+                            if post.createdAt != post.updatedAt
+                                |  edited #{moment(post.updatedAt).fromNow()}
+                            else
+                                |  posted #{moment(post.createdAt).fromNow()}
+                        // if the user is logged in, show the edit and delete buttons
+                        if user && (user._id === comment.user)
+                            a.btn.btn-primary(href=`/comments/${post._id}?_method=PUT`) Edit
+                            form(action=`/comments/${post._id}?_method=DELETE` method="POST")
+                                button.btn.btn-danger(type="submit") Delete
+        script.
+            hljs.initHighlightingOnLoad();

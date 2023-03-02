@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 Edit Profile
+    form(method='PUT' action='/users/profile')
+    if message
+        div.alert.alert-error= message
+    // change email
+    .form-group
+        label(for='email') Email
+        input#email.form-control(type='email' name='email', value=user.email)
+    .form-group
+        label(for='username') Username
+        input#username.form-control(type='text' name='username', value=user.username)
+    .form-group
+        label(for='password') Password
+        input#password.form-control(type='password' name='password', value=user.password)
+    button.btn.btn-primary(type='submit') Save Changes

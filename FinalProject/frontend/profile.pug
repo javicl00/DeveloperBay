@@ -1,0 +1,37 @@
+extends layout 
+
+block content 
+    .container
+    .row
+        .col-md-6.offset-md-3
+            h1 Profile
+            if message 
+                div.alert.alert-error= message
+            .card
+                .card-body 
+                    h5.card-title Username
+                    p= user.username
+                    hr
+                    h5.card-title Email
+                    p= user.email
+                    hr
+                    h5.card-title My Posts
+                    ul.list-group
+                        each post in posts
+                            li.list-group-item
+                                a(href=`/posts/search/${post._id}`)= post.title
+                    hr
+                    h5.card-title My Comments
+                    ul.list-group
+                        each comment in comments
+                            li.list-group-item
+                                // Here goes the comment text without link
+                                = comment.text
+
+                    hr
+                    a.btn.btn-primary(href='/users/profile/edit') Edit Profile
+
+
+
+
+

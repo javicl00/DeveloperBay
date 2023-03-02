@@ -1,0 +1,37 @@
+extends Layout 
+
+block content
+    .container
+        h1 New Snippet
+        form(action="/posts/create" method="POST")
+            .form-group
+                label(for="title") Title
+                input#title.form-control(type="text" name="title" placeholder="Title" required)
+            .form-group
+                label(for="description") Description
+                input#description.form-control(type="text" name="description" placeholder="Description" required)
+            .form-group
+                label(for="content") Code
+                textarea#code.form-control(name="content" placeholder="Code" required)
+            .form-group
+                label(for="tags") Tags
+                input#tags.form-control(type="text" name="tags" placeholder="Tags")
+            .form-group
+                label(for="language") Language
+                select#language.form-control(name="language" required)
+                    option(value="HTML") HTML
+                    option(value="CSS") CSS
+                    option(value="JavaScript") JavaScript
+                    option(value="Python") Python
+                    option(value="Ruby") Ruby
+                    option(value="Java") Java
+                    option(value="C#") C#
+                    option(value="C++") C++
+                    option(value="C") C
+                    option(value="PHP") PHP
+                    option(value="Swift") Swift
+                    option(value="Go") Go
+                    option(value="R") R
+                    option(value="SQL") SQL
+                    option(value="Other") Other
+            button.btn.btn-primary(type="submit") Submit

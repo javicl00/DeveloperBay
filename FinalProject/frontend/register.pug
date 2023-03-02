@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    .container
+        .row
+            .col-md-6.offset-md-3
+                h2.text-center Register
+                if error
+                    .alert.alert-danger
+                        p= error
+                form(method='POST' action='/users/register')
+                    .form-group
+                        label(for='username') Username
+                        input.form-control(type='username' id='username' name='username' placeholder='Write your username' required)
+                    .form-group
+                        label(for='email') Email
+                        input.form-control(type='email' id='email' name='email' placeholder='Write your email' required)
+                    .form-group
+                        label(for='password') Password
+                        input.form-control(type='password' id='password' name='password' placeholder='Write your Password' required)
+                    button.btn.btn-primary(type='submit') Register
+                p Already have an account? 
+                    a(href='/users/login') Login here

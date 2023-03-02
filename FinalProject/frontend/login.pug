@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col-md-6.offset-md-3
+        h2.text-center Login
+        //- .social-login
+        //-   a.btn.btn-primary(href="/auth/google") 
+        //-     i.bi.bi-google Google
+        //-   a.btn.btn-primary(href='/auth/facebook/token')
+        //-     i.bi.bi-facebook Facebook
+        //-   a.btn.btn-primary(href="/auth/twitter")
+        //-     i.bi.bi-twitter Twitter
+        //-   a.btn.btn-primary(href="/auth/github")
+        //-     i.bi.bi-github Github
+        if error
+          .alert.alert-danger
+            p= error
+        form(method='POST' action='/users/login')
+          .form-group
+            label(for='username') Username
+            input.form-control(type='username' id='username' name='username' placeholder='Write your username' required)
+          .form-group
+            label(for='password') Password
+            input.form-control(type='password' id='password' name='password' placeholder='Write your Password' required)
+          button.btn.btn-primary(type='submit') Login
+        p Still don't have an account? 
+          a(href='/users/register') Register here
+
