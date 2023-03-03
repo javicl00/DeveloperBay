@@ -3,6 +3,7 @@ const localStorage = require('localStorage');
 
 const secret = 'your-secret-key';
 
+// Middleware to check if the user is authenticated
 const authMiddleware = (req, res, next) => {
   // Get the token from localStorage
   const token = localStorage.getItem('token')
@@ -22,11 +23,10 @@ const authMiddleware = (req, res, next) => {
   });
 
 };
-
+// Middleware to check if the user is not authenticated
 const notAuthMiddleware = (req, res, next) => {
   // Get the token from localStorage
   const token = localStorage.getItem('token')
-
   if (token) {
     return res.redirect('/');
   }

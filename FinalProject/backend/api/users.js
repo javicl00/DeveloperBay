@@ -22,6 +22,8 @@ router.get('/register', async (req, res) => {
  * @param {String} role
  * @returns {String} 201
 */
+
+// Register a new user. If the user already exists, return an error message.
 router.post('/register', notAuthMiddleware, (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
@@ -72,7 +74,6 @@ router.post('/login', notAuthMiddleware, async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    // Find the user with the given username address
     const user = await User.findOne({ username });
     if (!user) {
         return res.render('login', { title: 'Developer Bay', error: 'Invalid username or password' });
@@ -89,17 +90,15 @@ router.post('/login', notAuthMiddleware, async (req, res) => {
     // Generate a JWT
     const token = jwt.sign({ id: user._id }, 'your-secret-key', { expiresIn: '1d' });
 
-    // Set the JWT in local storage, not as a cookie
+    // Set the JWT in local storage
     localStorage.setItem('token', token);
 
     // Get all posts
     const posts = await Post.find({});
 
-    // Send the JWT back to the client
-    // res.render('main', { title: 'Developer Bay', token: token, user: user, posts: posts });
     res.redirect('/');
 });
-
+// GET profile page with user information and posts. If the user is not logged in, redirect to login page.
 router.get('/profile', authMiddleware, async (req, res) => {
     let user = await User.findById(req.user.id);
     let posts = await Post.find({ author: user._id });
@@ -164,7 +163,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
 
 // get for logout. It will redirect to post for logout
 router.get('/logout', (req, res, next) => {
-    // delete the cookie with the token in it 
+    // delete the token
     localStorage.removeItem('token');
     res.redirect('/');
 });

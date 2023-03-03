@@ -5,7 +5,6 @@ block content
     form(method='PUT' action='/users/profile')
     if message
         div.alert.alert-error= message
-    // change email
     .form-group
         label(for='email') Email
         input#email.form-control(type='email' name='email', value=user.email)

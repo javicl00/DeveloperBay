@@ -14,7 +14,6 @@ block content
             textarea#code.form-control(name="content" placeholder="Code" required)= post.content
         .form-group
             label(for="tags") Tags
-            // en este input mostrar los tags que ya tiene el post separados por comas y espacios
             input#tags.form-control(type="text" name="tags" placeholder="Tags" value= post.tags.join(", ") required)
         .form-group
             label(for="language") Language

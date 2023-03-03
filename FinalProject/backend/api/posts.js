@@ -22,33 +22,33 @@ router.get('/search', async (req, res) => {
       user = await User.findById(userEncrypted.id);
     }
     let keyword = req.query.keyword;
-    // if keyword is more than a word (e.g. "hello world"), split it into an array of words
     let post = await Post.find();
     console.log("Hay keyword");
     // remove leading and trailing spaces
     keyword = keyword.trim();
     console.log(keyword);
     // convert every n-space to a single space
-    const keywords = keyword.trim().split(/\s+/); // Saneamos los espacios y convertimos en array
+    const keywords = keyword.trim().split(/\s+/); // Sanitize the keyword 
     if (!keywords || keywords.length === 0) {
+      console.log("No hay keyword");
       return res.render('main', { post, user });
     }
-    const regexKeywords = keywords.map(k => new RegExp(k, 'i')); // Convertimos en regex case-insensitive
+    const regexKeywords = keywords.map(k => new RegExp(k, 'i')); // Convert to regex case-insensitive
     try {
-      const count = await Post.count({ title: { $in: regexKeywords } });
-      const limit = 2;
-      const page = req.query.page || 1;
-      const totalPages = Math.ceil(count / limit);
+      const count = await Post.count({ title: { $in: regexKeywords } }); // Count the number of posts that match the keyword
+      const limit = 10; 
+      const page = req.query.page || 1; 
+      const totalPages = Math.ceil(count / limit); 
       const posts = await Post.find({ title: { $in: regexKeywords } })
         .sort({ createdAt: -1 })
         .limit(limit)
-        .skip((page - 1) * limit)
+        .skip((page - 1) * limit) 
+      console.log(posts);
       res.render('main', { user, posts, totalPages, page });
     } catch (err) {
       console.error(err);
       res.render('main', { message: 'Error searching' });
     }
-    // res.render('main', { post, user });
   } catch (err) {
     console.error(err);
     res.render('main', { message: 'Error searching' });
@@ -155,7 +155,7 @@ router.post('/delete/:id', authMiddleware, async (req, res) => {
 });
 
 // Add a new comment to a post
-router.post('/:postId/comments', async (req, res) => {
+router.post('/:postId/comments', authMiddleware ,async (req, res) => {
   try {
     const text = req.body.content;
     const post = await Post.findById(req.params.postId);

@@ -13,40 +13,39 @@ block content
     if user 
       h5 Hello #{user.username}!
       a.btn.btn-primary(href="/posts/newPost") New Snippet
-
-      if !posts  
+      // una condicion u otra
+      
+      if !posts || posts.length === 0
         .card.post
           .card-content
             span.card-title
             p.lead.text-muted No posts yet
-
-      else if posts.length === 0
-        .card.post
-          .card-content
-            span.card-title
-              p.lead.text No posts yet
       
+      //- else 
+      //-   each post, index in posts 
+      //-     // console log index
+      //-     - console.log("index: "+index)
+      //-     if index % 10 === 0
+      //-       if index !== 0
+      //-         nav
+      //-           ul.pagination
+      //-             li.page-item
+      //-               a.page-link(href=`?page=${index/10 - 1}`) &laquo;
+      //-         nav
+      //-           ul.pagination
+      //-             li.page-item
+      //-               a.page-link(href=`?page=${index/10 + 1}`) &raquo;
+      //-     if page ? Math.floor(index / 10) === parseInt(page) : true 
       else 
-        each post, index in posts
-          if index % 10 === 0
-            if index !== 0
-              nav
-                ul.pagination
-                  li.page-item
-                    a.page-link(href=`?page=${index/10 - 1}`) &laquo;
-              nav
-                ul.pagination
-                  li.page-item
-                    a.page-link(href=`?page=${index/10 + 1}`) &raquo;
-          if page ? Math.floor(index / 10) === parseInt(page) : true
-            .card.post
-              .card-content
-                span.card-title.text-center.text-primary
-                  a(href=`/posts/search/${post._id}`)= post.title
-                p= post.description
-                p Posted by #{post.author_name} on #{moment(post.createdAt).format('DD MMMM, YYYY')}
-              .card-action
-                a(href=`/posts/search/${post._id}`) View Comments (#{post.comments.length})
+        each post in posts
+          .card.post
+            .card-content
+              span.card-title.text-center.text-primary
+                a(href=`/posts/search/${post._id}`)= post.title
+              p= post.description
+              p Posted by #{post.author_name} on #{moment(post.createdAt).format('DD MMMM, YYYY')}
+            .card-action
+              a(href=`/posts/search/${post._id}`) View Comments (#{post.comments.length})
     
     else
       p Log in to post snippets.
